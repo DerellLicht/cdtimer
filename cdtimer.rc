@@ -1,0 +1,96 @@
+//****************************************************************************
+//  Copyright (c) 2010-2016  Daniel D Miller
+//  Resources for cdtimer utility
+//****************************************************************************
+//  Interesting notes about this file:
+//
+//  > SS_NOTIFY and "Static" controls
+//    If SS_NOTIFY is not specified in the control styles,
+//    you cannot attach tooltips to the control.
+//
+//*********************************************************************************************************
+// DS_3DLOOK
+//     Gives the dialog box a non-bold font and draws three-dimensional borders 
+//     around control windows in the dialog box.
+//     The DS_3DLOOK style is required only by Microsoft Win32®-based applications compiled 
+//     for system versions earlier than Windows 95 or Windows NT® 4.0. 
+//     The system automatically applies the three-dimensional look to dialog boxes created by 
+//     applications compiled for current versions of the system.
+//*********************************************************************************************************
+// What's the deal with the DS_SHELLFONT flag?
+// 
+// It indicates that you want the Windows 2000 default shell font. 
+// But that doesn't mean that you're going to get it.
+// 
+// In order to indicate that you would like the "Windows 2000" look for your 
+// dialog, you have to do three things and hope for a fourth:
+// 
+// > Use a DIALOGEX template instead of a DIALOG template.
+// > Set the DS_SHELLFONT flag in your dialog styles.
+// > Set the dialog font to "MS Shell Dlg".
+// > Hope that you're running on Windows 2000 or later on a system that has the
+//   new Windows 2000 dialog font enabled. 
+// 
+// If all four conditions are satisfied, then your dialog gets the "Windows 2000"
+// look. If any condition fails, then you get the "classic" dialog font. 
+//*********************************************************************************************************
+// 04/26/13 12:45  On Win7, WS_DLGFRAME and WS_CAPTION seem to create identical dialogs !
+// > WS_DLGFRAME  Creates a window with a double border but no title.
+// > WS_BORDER    Creates a window that has a border.
+// > WS_CAPTION   Creates a window that has a title bar (implies the WS_BORDER style). 
+//                Cannot be used with the WS_DLGFRAME style.
+// > WS_SYSMENU   Among other things, adds the CLOSE button on title bar
+//                WS_SYSMENU also needed in order to show program icon on title bar
+//*********************************************************************************************************
+//  WS_THICKFRAME   Creates a window with a thick frame that can be used to size the window.
+//  04/26/13 - initially, one of these other flags was over-riding WS_THICKFRAME
+//*********************************************************************************************************
+
+//lint -e129  declaration expected, identifier 'LTEXT' ignored - this was in my .RC file
+#include <windows.h>
+#include "resource.h"
+
+IDI_CDTIMER ICON    celtic.whorl.ico
+
+//*******************************************************************
+//  main dialog
+//*******************************************************************
+
+IDD_MAIN_DIALOG DIALOGEX 200, 200, 196, 105
+STYLE DS_MODALFRAME | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "cdtimer utility"
+FONT 12, "Times New Roman"
+BEGIN
+    CTEXT       "derelict's timer",       IDC_TITLE,      49,  4, 100, 12, SS_SUNKEN
+    CTEXT       "Startup Complete",       IDC_MESSAGE,    44, 32, 110, 12, SS_SUNKEN
+                                                        
+    LTEXT       "Max Time (minutes):",    IDC_STATIC,      4, 50,  74, 10  //lint !e2  Unclosed Quote
+    EDITTEXT                              IDC_EDIT2,      80, 50,  26, 10, ES_NUMBER
+    PUSHBUTTON  "Update Variables",       IDC_UPDATE,    120, 49,  70, 12, BS_PUSHBUTTON
+    PUSHBUTTON  "Cancel CountUp",         IDC_UPDATE,    120, 49,  70, 12, BS_PUSHBUTTON | NOT WS_VISIBLE
+                                                        
+    LTEXT       "Seconds per Tick Mark:", IDC_STATIC,      4, 64,  74, 10
+    EDITTEXT                              IDC_EDIT3,      80, 64,  26, 10, ES_NUMBER
+    PUSHBUTTON  "Count Up",               IDC_COUNTDIR,  120, 63,  70, 12, BS_PUSHBUTTON
+    
+    LTEXT       "Wave file:",             IDC_STATIC,      4, 80,  74, 10
+    PUSHBUTTON  " ... ",                  IDC_WAVEFILE,   60, 79,  12, 11, BS_PUSHBUTTON
+    EDITTEXT                              IDC_EDIT4,      80, 80, 110, 10, ES_NUMBER
+    
+END
+
+//*******************************************************************
+//  timer-expired dialog
+//*******************************************************************
+
+IDD_DONE_DIALOG DIALOGEX 200, 200, 100, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+// EXSTYLE WS_EX_APPWINDOW
+CAPTION "Countdown"
+FONT 12, "Times New Roman"
+BEGIN
+    LTEXT           "Time is Up!!",IDC_STATIC,40,20,100,10
+    DEFPUSHBUTTON   "OK",IDOK,40,35,20,15
+END
+

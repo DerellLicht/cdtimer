@@ -1,0 +1,31 @@
+CDTIMER - derelict's Countdown Timer utility.
+Copyright (c) 2003-2009 Daniel D. Miller
+
+Email:     derelict@comcast.net
+Web Page:  home.comcast.net/~derelict
+
+This utility was originally named TransDesk.  Dan Miller renamed it because
+the original name is used by other applications in common distribution.
+
+This program and its source code are distributed as open-source
+freeware.  They may be distributed via any media without my permission,
+and may be used for any purpose, commercial or private.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+//*******************************************************************
+
+This is a simple, FREEWARE slider-based countdown timer.  
+It will display a "Time's Up" message box when the timer expires.  
+The current time remaining is shown on the title bar, 
+so it will remain visible if the window is minimized.
+
+CdTimer stores its MaxTimeScale and SecondsPerTickMark settings in
+a file called cdtimer.ini, which is located in the place where cdtimer.exe
+was located.  This file will be created the first time CdTimer is run.
+
+The Status field is only used for debug/error messages; 
+normally, it should just say "none".
+
