@@ -22,6 +22,7 @@ static const char Version[] = "Countdown Timer V1.02" ;
 #include "cdtimer.h"
 #include "system.h"
 #include "statbar.h"
+#include "winmsgs.h"
 
 UINT  timerID = 0 ;
 
@@ -232,26 +233,28 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
    //***************************************************
    //  debug: log all windows messages
    //***************************************************
-   // if (dbg_flags & DBG_WINMSGS) {
-   //    switch (iMsg) {
-   //    //  list messages to be ignored
-   //    case WM_CTLCOLORBTN:
-   //    case WM_CTLCOLORSTATIC:
-   //    case WM_CTLCOLOREDIT:
-   //    case WM_CTLCOLORLISTBOX:
-   //    case WM_MOUSEMOVE:
-   //    case WM_NCMOUSEMOVE:
-   //    case WM_NCHITTEST:
-   //    case WM_SETCURSOR:
-   //    case WM_TIMER:
-   //    case WM_NOTIFY:
-   //    case WM_COMMAND:  //  prints its own msgs below
-   //       break;
-   //    default:
-   //       syslog("TOP [%s]\n", lookup_winmsg_name(iMsg)) ;
-   //       break;
-   //    }
-   // }
+   if (dbg_flags & DBG_WINMSGS) 
+   {
+      switch (iMsg) {
+      //  list messages to be ignored
+      case WM_CTLCOLORBTN:
+      case WM_CTLCOLORSTATIC:
+      case WM_CTLCOLOREDIT:
+      case WM_CTLCOLORLISTBOX:
+      // case WM_MOUSEMOVE:
+      // case WM_NCMOUSEMOVE:
+      // case WM_NCHITTEST:
+      // case WM_SETCURSOR:
+      case WM_TIMER:
+      case WM_NCACTIVATE:
+      case WM_NOTIFY:
+      case WM_COMMAND:  //  prints its own msgs below
+         break;
+      default:
+         syslog("TOP [%s]\n", lookup_winmsg_name(iMsg)) ;
+         break;
+      }
+   }
 
    switch(iMsg) {
    case WM_INITDIALOG:
@@ -296,6 +299,9 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
       // sbparts[1] = (int) (8 * cxClient / 10) ;
       // sbparts[2] = -1;
       MainStatusBar->SetParts(2, &sbparts[0]);
+      
+      //  set window position
+      SetWindowPos(hwnd, HWND_TOP, window_left, window_top, 0, 0, SWP_NOSIZE);
    
       set_control_font(hwndTitle, font_name_title, FONT_HEIGHT_TITLE, 0);
       set_control_font(hwndMessage, font_name_message, FONT_HEIGHT_MESSAGE, EZ_ATTR_BOLD);
@@ -328,6 +334,17 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 
       break;
 
+   // case WM_WINDOWPOSCHANGING:
+   case WM_EXITSIZEMOVE:
+      {
+      RECT rect ;
+      GetWindowRect(hwnd, &rect);
+      window_top = rect.top ;
+      window_left = rect.left ;
+      save_cfg_file();
+      }
+      break ;
+      
    case WM_HSCROLL:
       // wsprintf(tempstr, "wParam=0x%08X  ", wParam) ;
       // hdc = GetDC (hwnd) ;

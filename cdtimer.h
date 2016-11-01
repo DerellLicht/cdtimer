@@ -11,6 +11,8 @@ extern char wave_name[PATH_MAX+1] ;
 
 //  config.cpp
 extern uint dbg_flags ;
+extern uint window_top ;
+extern uint window_left ;
 LRESULT init_config(void);
 LRESULT save_cfg_file(void);
 

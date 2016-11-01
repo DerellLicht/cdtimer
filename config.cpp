@@ -21,13 +21,15 @@
 #include "cdtimer.h"
 #include "system.h"
 
+uint window_top = 100 ;
+uint window_left = 200 ;
 static char ini_name[PATH_MAX+1] = "" ;
 
 //****************************************************************************
 //  debug: message-reporting data
 //****************************************************************************
 uint dbg_flags =
-               // DBG_FWDL_DATA ||
+               // DBG_WINMSGS ||
                0 ;
 
 //****************************************************************************
@@ -41,44 +43,6 @@ typedef struct dialog_pos_s {
    uint left ;
    uint top ;
 } dialog_pos_t ;
-
-//****************************************************************************
-static dialog_pos_t main_pos = { 0, 0, 0 } ;
-
-uint mainwin_left(void)
-{
-   return main_pos.left ;
-}
-
-uint mainwin_top(void)
-{
-   return main_pos.top ;
-}
-
-void set_main_origin(uint left, uint top)
-{
-   // syslog("cp origin: X%u Y%u\n", left, top) ;
-   if (left > get_screen_width()) {
-      left = 200 ;
-   }
-   if (top > get_screen_height()) {
-      top = 200 ;
-   }
-   main_pos.pos_modified = true ;
-   main_pos.left = left ;
-   main_pos.top = top ;
-}
-
-static void restore_main_orig(char *vars)
-{
-   char *tl = strchr(vars, ',') ;
-   if (tl == 0)
-      return ;
-   *tl++ = 0 ;
-   main_pos.left = atoi(vars) ;
-   main_pos.top  = atoi(tl) ;
-   // syslog("cp origin (restored): X%u Y%u\n", main_pos.left, main_pos.top) ;
-}
 
 //****************************************************************************
 static void strip_comments(char *bfr)
@@ -100,6 +64,8 @@ LRESULT save_cfg_file(void)
    }
    //  save any global vars
    fprintf(fd, "dbg_flags=0x%X\n", dbg_flags) ;
+   fprintf(fd, "window_top=%u\n", window_top) ;
+   fprintf(fd, "window_left=%u\n", window_left) ;
    fprintf(fd, "max_timer_mins=%u\n", max_timer_mins) ;
    fprintf(fd, "ticks=%u\n", (unsigned) ticks) ;
    fprintf(fd, "wave_name=%s\n", wave_name) ;
@@ -154,6 +120,12 @@ LRESULT init_config(void)
    // fprintf(fd, "wave_name=%s\n", wave_name) ;
       if (strcmp(inpstr, "dbg_flags") == 0) {
          dbg_flags = strtoul(tl, NULL, 0);    
+      } else
+      if (strcmp(inpstr, "window_top") == 0) {
+         window_top = (unsigned) atoi(tl) ;
+      } else
+      if (strcmp(inpstr, "window_left") == 0) {
+         window_left = (unsigned) atoi(tl) ;
       } else
       if (strcmp(inpstr, "max_timer_mins") == 0) {
          max_timer_mins = (unsigned) atoi(tl) ;
