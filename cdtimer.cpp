@@ -20,17 +20,18 @@ static const char Version[] = "Countdown Timer V1.02" ;
 #include "common.h"
 #include "commonw.h"
 #include "cdtimer.h"
-#include "system.h"
+/* #include "system.h" */
 #include "statbar.h"
 #include "winmsgs.h"
 
-UINT  timerID = 0 ;
+//lint -esym(1055, atoi)
+
+static UINT  timerID = 0 ;
 
 //*********************************************************************
 // variables
 
 static HINSTANCE g_hinst;
-static HWND hwndTopLevel = NULL ;
 static HWND hwndTitle = NULL ;
 static HWND hwndMessage = NULL ;
 static HWND hwndMaxMins = NULL ;
@@ -41,7 +42,7 @@ static HWND hwndCountDir = NULL;
 
 //  tracker data
 static HWND hwndTrack;
-static HMENU ID_TRACKBAR;
+static HMENU const ID_TRACKBAR = NULL;
 static UINT  giSelMin, giSelMax ;
 
 #define  MIN_TIME    (0)
@@ -60,19 +61,19 @@ static CStatusBar *MainStatusBar = NULL;
 //*************************************
 // #define  HEADER_Y    (20)
 // 
-#define  DIALOG_X    (70)
-#define  DIALOG_Y    (85)
+// #define  DIALOG_X    (70)
+// #define  DIALOG_Y    (85)
 // 
 // // #define  SLIDER_X    ( 30)
 #define  SLIDER_Y    ( 40)
-#define  DIALOG_DX   (260)
+// #define  DIALOG_DX   (260)
 
 #define  SLIDER_DX   (300)
 #define  SLIDER_DY   ( 30)
 
 #define  LEFT_EDGE   (75)
 
-#define  STATUS_Y    (100)
+// #define  STATUS_Y    (100)
 
 static char tempstr[260] ;
 
@@ -93,17 +94,17 @@ static ct_mode_t count_mode = COUNT_DOWN ;
 static ct_state_t count_state = STATE_IDLE ;
 
 //*********************************************************************
-static void update_slidebar(HWND hwndTrack)
+static void update_slidebar(HWND hwnd)
 {
    // min. & max. positions 
-   SendMessage (hwndTrack, TBM_SETRANGE, (WPARAM) TRUE, (LPARAM) MAKELONG (0, MAX_TIME)); 
+   SendMessage (hwnd, TBM_SETRANGE, (WPARAM) TRUE, (LPARAM) MAKELONG (0, MAX_TIME)); 
    // new page size ( distance that bar is moved by PgUp/PgDn )
-   SendMessage (hwndTrack, TBM_SETPAGESIZE, 0, (LPARAM) TICK_SPREAD) ;
-   SendMessage (hwndTrack, TBM_SETSEL, (WPARAM) FALSE, (LPARAM) MAKELONG (0, MAX_TIME));
-   SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, (LPARAM) 0);
-   SendMessage (hwndTrack, TBM_SETTICFREQ, (WPARAM) TICK_SPREAD, (LPARAM) 0);
+   SendMessage (hwnd, TBM_SETPAGESIZE, 0, (LPARAM) TICK_SPREAD) ;
+   SendMessage (hwnd, TBM_SETSEL, (WPARAM) FALSE, (LPARAM) MAKELONG (0, MAX_TIME));
+   SendMessage (hwnd, TBM_SETPOS, (WPARAM) TRUE, (LPARAM) 0);
+   SendMessage (hwnd, TBM_SETTICFREQ, (WPARAM) TICK_SPREAD, (LPARAM) 0);
 
-   SetFocus (hwndTrack);
+   SetFocus (hwnd);
 }
 
 //*********************************************************************
@@ -220,7 +221,7 @@ static BOOL CALLBACK DoneProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
    default:
       return FALSE;
 	}
-}
+}  //lint !e715
 
 //***********************************************************************
 static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
@@ -258,8 +259,6 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 
    switch(iMsg) {
    case WM_INITDIALOG:
-      hwndTopLevel = hwnd ;
-      
       SetClassLongA(hwnd, GCL_HICON,   (LONG) LoadIcon(g_hinst, (LPCTSTR)IDI_CDTIMER));
       SetClassLongA(hwnd, GCL_HICONSM, (LONG) LoadIcon(g_hinst, (LPCTSTR)IDI_CDTIMER));
 
@@ -518,8 +517,8 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 
             }
             break;
-         }  //  end switch(target)
-      }  //  end switch(cmd)
+         }  //lint !e744  end switch(target)
+      }  //lint !e744  end switch(cmd)
       }  //  end WM_COMMAND context
       break;
 
@@ -545,22 +544,18 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
    }  //  switch(iMsg) 
 
    return true;
-}
+}  //lint !e715
 
 //***********************************************************************
+//lint -esym(818, szCmdLine, hPrevInstance)
+
 int APIENTRY WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
                   LPSTR szCmdLine, int iCmdShow)   //lint !e1784
 {//lint !e1784
-
    g_hinst = hInstance;
-   // syslog("starting Svr10 %s at %s\n", VerNumA, get_dtimes_str(NULL)) ;
 
-   // parse_command_line() ;
    load_exec_filename() ;     //  get our executable name
-   // open_global_handles() ;    //  global HBRUSHes and anything else
    init_config();
-   // load_led_images() ;        //  load our image list
-   // load_anacom_logo();        //  Load Anacom logo bitmap
 
    //**************************************************************************
    //  create main dialog box

@@ -14,12 +14,10 @@
 #include <windows.h>
 #include <stdio.h>   //  fopen, etc
 #include <stdlib.h>  //  atoi()
-#include <tchar.h>
 #include <limits.h>     //  PATH_MAX
 
 #include "common.h"
 #include "cdtimer.h"
-#include "system.h"
 
 uint window_top = 100 ;
 uint window_left = 200 ;
@@ -31,18 +29,6 @@ static char ini_name[PATH_MAX+1] = "" ;
 uint dbg_flags =
                // DBG_WINMSGS ||
                0 ;
-
-//****************************************************************************
-//  dialog-position data
-//****************************************************************************
-#define  CDTIMER_LEFT     10
-#define  CDTIMER_TOP      (MON_Y0 + 23)
-
-typedef struct dialog_pos_s {
-   bool pos_modified ;
-   uint left ;
-   uint top ;
-} dialog_pos_t ;
 
 //****************************************************************************
 static void strip_comments(char *bfr)

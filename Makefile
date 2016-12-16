@@ -1,4 +1,5 @@
-SHELL=/tccle14/tcc.exe
+#SHELL=/tccle14/tcc.exe
+SHELL=cmd.exe
 USE_DEBUG = NO
 
 ifeq ($(USE_DEBUG),YES)
@@ -19,10 +20,9 @@ LiFLAGS += -DWINVER=0x0501
 CPPSRC=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
 der_libs/winmsgs.cpp \
-der_libs/statbar.cpp \
-der_libs/progbar.cpp 
+der_libs/statbar.cpp 
 
-CPPSRC+=cdtimer.cpp config.cpp system.cpp
+CPPSRC+=cdtimer.cpp config.cpp
 
 RCSRC=anacomm.rc
 
@@ -67,8 +67,6 @@ rc.o: cdtimer.rc
 der_libs/common_funcs.o: der_libs/common.h
 der_libs/common_win.o: der_libs/common.h der_libs/commonw.h
 der_libs/statbar.o: der_libs/common.h der_libs/commonw.h der_libs/statbar.h
-der_libs/progbar.o: der_libs/common.h der_libs/progbar.h
-cdtimer.o: resource.h der_libs/common.h der_libs/commonw.h cdtimer.h system.h
+cdtimer.o: resource.h der_libs/common.h der_libs/commonw.h cdtimer.h
 cdtimer.o: der_libs/statbar.h
-config.o: der_libs/common.h cdtimer.h system.h
-system.o: der_libs/common.h der_libs/commonw.h system.h
+config.o: der_libs/common.h cdtimer.h
