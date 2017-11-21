@@ -3,10 +3,10 @@
 //  
 //  Written by:   Daniel D. Miller
 //  
-//  Last Update:  10/28/16 06:43
+//  Last Update:  11/20/17 
 //*********************************************************************
 
-static const char Version[] = "Countdown Timer V1.02" ;
+static const char Version[] = "Countdown Timer V1.03" ;
 
 #include <windows.h>
 #include <commctrl.h>			  //  link to comctl32.lib
@@ -261,7 +261,7 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
    case WM_INITDIALOG:
       SetClassLongA(hwnd, GCL_HICON,   (LONG) LoadIcon(g_hinst, (LPCTSTR)IDI_CDTIMER));
       SetClassLongA(hwnd, GCL_HICONSM, (LONG) LoadIcon(g_hinst, (LPCTSTR)IDI_CDTIMER));
-
+      SetWindowText(hwnd, Version) ;
       
       hwndTitle = GetDlgItem(hwnd, IDC_TITLE) ;
       hwndMessage = GetDlgItem(hwnd, IDC_MESSAGE) ;
@@ -270,16 +270,18 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
       hwndWaveFile = GetDlgItem(hwnd, IDC_EDIT4) ;
       hwndUpdate = GetDlgItem(hwnd, IDC_UPDATE) ;
       hwndCountDir = GetDlgItem(hwnd, IDC_COUNTDIR) ;
-      
-      //  create the trackbar
-      hwndTrack = CreateTrackbar (hwnd, MIN_TIME, MAX_TIME, MIN_TIME, MAX_TIME) ;
-      
+
+      //  set trackbar variables
       wsprintf(msgstr, "%u", max_timer_mins);
       SetWindowText(hwndMaxMins, msgstr);
+      MAX_TIME = max_timer_mins * 60 ;
       wsprintf(msgstr, "%u", ticks);
       SetWindowText(hwndSecsPerTick, msgstr);
       SetWindowText(hwndWaveFile, wave_name);
 
+      //  create the trackbar
+      hwndTrack = CreateTrackbar (hwnd, MIN_TIME, MAX_TIME, MIN_TIME, MAX_TIME) ;
+      
       GetWindowRect(hwnd, &myRect) ;
       // GetClientRect(hwnd, &myRect) ;
       cxClient = (myRect.right - myRect.left) ;

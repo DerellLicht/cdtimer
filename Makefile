@@ -1,5 +1,4 @@
-#SHELL=/tccle14/tcc.exe
-SHELL=cmd.exe
+#SHELL=cmd.exe
 USE_DEBUG = NO
 
 ifeq ($(USE_DEBUG),YES)
@@ -42,7 +41,7 @@ clean:
 
 dist:
 	rm -f *.zip
-	zip cdtimer.zip cdtimer.exe cdtimer.txt copying
+	zip cdtimer.zip cdtimer.exe cdtimer.txt
 																			
 lint:
 	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) lintdefs.cpp cdtimer.rc $(CPPSRC)
