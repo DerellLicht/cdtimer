@@ -6,11 +6,10 @@
 //  Last Update:  11/20/17 
 //*********************************************************************
 
-static const char Version[] = "Countdown Timer V1.03" ;
+static const char Version[] = "Countdown Timer V1.04" ;
 
 #include <windows.h>
 #include <commctrl.h>			  //  link to comctl32.lib
-// #include <string.h>
 #include <limits.h>     //  PATH_MAX
 #include <math.h>
 #include <tchar.h>
@@ -20,9 +19,9 @@ static const char Version[] = "Countdown Timer V1.03" ;
 #include "common.h"
 #include "commonw.h"
 #include "cdtimer.h"
-/* #include "system.h" */
 #include "statbar.h"
 #include "winmsgs.h"
+#include "trackbar.h"
 
 //lint -esym(1055, atoi)
 
@@ -41,7 +40,6 @@ static HWND hwndUpdate = NULL ;
 static HWND hwndCountDir = NULL;
 
 //  tracker data
-static HWND hwndTrack;
 static HMENU const ID_TRACKBAR = NULL;
 static UINT  giSelMin, giSelMax ;
 
@@ -58,6 +56,9 @@ static unsigned tmins  = 0 ;
 static unsigned tsecs  = 0 ;
 
 static CStatusBar *MainStatusBar = NULL;
+
+// static HWND hwndTrack;
+static CTrackbar *CDTrackbar = NULL ;
 //*************************************
 // #define  HEADER_Y    (20)
 // 
@@ -94,51 +95,42 @@ static ct_mode_t count_mode = COUNT_DOWN ;
 static ct_state_t count_state = STATE_IDLE ;
 
 //*********************************************************************
-static void update_slidebar(HWND hwnd)
-{
-   // min. & max. positions 
-   SendMessage (hwnd, TBM_SETRANGE, (WPARAM) TRUE, (LPARAM) MAKELONG (0, MAX_TIME)); 
-   // new page size ( distance that bar is moved by PgUp/PgDn )
-   SendMessage (hwnd, TBM_SETPAGESIZE, 0, (LPARAM) TICK_SPREAD) ;
-   SendMessage (hwnd, TBM_SETSEL, (WPARAM) FALSE, (LPARAM) MAKELONG (0, MAX_TIME));
-   SendMessage (hwnd, TBM_SETPOS, (WPARAM) TRUE, (LPARAM) 0);
-   SendMessage (hwnd, TBM_SETTICFREQ, (WPARAM) TICK_SPREAD, (LPARAM) 0);
-
-   SetFocus (hwnd);
-}
-
-//*********************************************************************
 //  tracker/slider sample from MSDN
 //*********************************************************************
 // CreateTrackbar - creates and initializes a trackbar. 
 // 
 // Global variable 
 //     g_hinst - instance handle 
-static HWND WINAPI CreateTrackbar (HWND hwndDlg,	// handle of dialog box (parent window) 
-	UINT iMin,						  // minimum value in trackbar range 
-	UINT iMax,						  // maximum value in trackbar range 
-	UINT iSelMin,					  // minimum value in trackbar selection 
-	UINT iSelMax)					  // maximum value in trackbar selection 
-{
-   giSelMin = iSelMin ;
-   giSelMax = iSelMax ;
-
-	hwndTrack = CreateWindowEx (0,	// no extended styles 
-		TRACKBAR_CLASS,			  // class name 
-		"Trackbar Control",		  // title (caption) 
-		WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_ENABLESELRANGE,	// style 
-      LEFT_EDGE, SLIDER_Y,      // position 
-      SLIDER_DX, SLIDER_DY,     // size 
-		hwndDlg,						  // parent window 
-		ID_TRACKBAR,				  // control identifier 
-      g_hinst,                  // instance 
-		NULL							  // no WM_CREATE parameter 
-		);
-
-   update_slidebar(hwndTrack) ;
-
-	return hwndTrack;
-}  //lint !e715
+// static HWND WINAPI CreateTrackbar (
+//    HWND hwndDlg,  // handle of dialog box (parent window) 
+//       LEFT_EDGE, SLIDER_Y,      // position 
+//       SLIDER_DX, SLIDER_DY,     // size 
+//    UINT iMin,     // minimum value in trackbar range 
+//    UINT iMax,     // maximum value in trackbar range 
+//    UINT iSelMin,  // minimum value in trackbar selection 
+//    UINT iSelMax,  // maximum value in trackbar selection 
+//    ID_TRACKBAR
+//    )
+// {
+//    giSelMin = iSelMin ;
+//    giSelMax = iSelMax ;
+// 
+//   hwndTrack = CreateWindowEx (0,   // no extended styles 
+//      TRACKBAR_CLASS,           // class name 
+//      "Trackbar Control",       // title (caption) 
+//      WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_ENABLESELRANGE, // style 
+//       LEFT_EDGE, SLIDER_Y,      // position 
+//       SLIDER_DX, SLIDER_DY,     // size 
+//      hwndDlg,                  // parent window 
+//      ID_TRACKBAR,              // control identifier 
+//       g_hinst,                  // instance 
+//      NULL                      // no WM_CREATE parameter 
+//      );
+// 
+//    update_slidebar(hwndTrack) ;
+// 
+//   return hwndTrack;
+// }  //lint !e715
 
 //*********************************************************************
 static void update_timer_count(HWND hwnd)
@@ -162,7 +154,8 @@ static void update_timer_count(HWND hwnd)
       tsecs = tcount % 60 ;
       wsprintf(tempstr, " setting: %2u mins, %2u secs ", tmins, tsecs) ;
       SetWindowText(hwndMessage, tempstr);
-      SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, (LPARAM) tcount);
+      // SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, (LPARAM) tcount);
+      CDTrackbar->set_position(tcount);
       wsprintf(tempstr, "%2u mins, %2u secs ", tmins, tsecs) ;
       SetWindowText(hwnd, tempstr) ;
    }
@@ -227,7 +220,7 @@ static BOOL CALLBACK DoneProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
    RECT myRect ;
-   DWORD dwPos ;
+   unsigned dwPos ;
    char msgstr[81];
    // bool bResult ;
 
@@ -280,7 +273,27 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
       SetWindowText(hwndWaveFile, wave_name);
 
       //  create the trackbar
-      hwndTrack = CreateTrackbar (hwnd, MIN_TIME, MAX_TIME, MIN_TIME, MAX_TIME) ;
+      // hwndTrack = CreateTrackbar (hwnd, MIN_TIME, MAX_TIME, MIN_TIME, MAX_TIME) ;
+      CDTrackbar = new CTrackbar(
+         hwnd,  // handle of dialog box (parent window) 
+         LEFT_EDGE, SLIDER_Y,      // position 
+         SLIDER_DX, SLIDER_DY,     // size 
+         MIN_TIME, MAX_TIME, MIN_TIME, MAX_TIME, ID_TRACKBAR) ;
+
+      // HWND hwndDlg,  // handle of dialog box (parent window) 
+      // unsigned in_x0,
+      // unsigned in_y0,
+      // unsigned in_dx,
+      // unsigned in_dy,
+      // unsigned in_iMin,     // minimum value in trackbar range 
+      // unsigned in_iMax,     // maximum value in trackbar range 
+      // unsigned in_iSelMin,  // minimum value in trackbar selection 
+      // unsigned in_iSelMax,  // maximum value in trackbar selection 
+      // unsigned in_idTrackBar
+
+      CDTrackbar->update_trackbar(MAX_TIME, TICK_SPREAD);
+      giSelMin = MIN_TIME ;
+      giSelMax = MAX_TIME ;
       
       GetWindowRect(hwnd, &myRect) ;
       // GetClientRect(hwnd, &myRect) ;
@@ -363,26 +376,26 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
       switch (LOWORD(wParam)) {
       //  this message is sent when the tracker "thumb" is released
       case TB_ENDTRACK:
-         dwPos = SendMessage (hwndTrack, TBM_GETPOS, 0, 0);
-         if (dwPos > giSelMax)
-            SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, // redraw flag 
-               (LPARAM) giSelMax);
-         else if (dwPos < giSelMin)
-            SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, // redraw flag 
-               (LPARAM) giSelMin);
+         dwPos = CDTrackbar->get_position();
+         if (dwPos > giSelMax) {
+            CDTrackbar->set_position(giSelMax);
+         }
+         else if (dwPos < giSelMin) {
+            CDTrackbar->set_position(giSelMin);
+         }
          
          tcount = dwPos ;
          update_timer_count(hwnd) ;
          break;
 
       case TB_THUMBTRACK:
-         dwPos = SendMessage (hwndTrack, TBM_GETPOS, 0, 0);
-         if (dwPos > giSelMax)
-            SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, // redraw flag 
-               (LPARAM) giSelMax);
-         else if (dwPos < giSelMin)
-            SendMessage (hwndTrack, TBM_SETPOS, (WPARAM) TRUE, // redraw flag 
-               (LPARAM) giSelMin);
+         dwPos = CDTrackbar->get_position();
+         if (dwPos > giSelMax) {
+            CDTrackbar->set_position(giSelMax);
+         }
+         else if (dwPos < giSelMin) {
+            CDTrackbar->set_position(giSelMin);
+         }
          
          tcount = dwPos ;
          update_timer_count(hwnd) ;
@@ -506,7 +519,8 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 
                if (changed) {
                   save_cfg_file();
-                  update_slidebar(hwndTrack) ;
+                  // update_slidebar(hwndTrack) ;
+                  CDTrackbar->update_trackbar(MAX_TIME, TICK_SPREAD);
                }
             }
             //  overload Updated button

@@ -19,9 +19,10 @@ LiFLAGS += -DWINVER=0x0501
 CPPSRC=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
 der_libs/winmsgs.cpp \
-der_libs/statbar.cpp 
+der_libs/statbar.cpp \
+der_libs/trackbar.cpp
 
-CPPSRC+=cdtimer.cpp config.cpp
+CPPSRC+=cdtimer.cpp config.cpp 
 
 RCSRC=anacomm.rc
 
@@ -66,6 +67,7 @@ rc.o: cdtimer.rc
 der_libs/common_funcs.o: der_libs/common.h
 der_libs/common_win.o: der_libs/common.h der_libs/commonw.h
 der_libs/statbar.o: der_libs/common.h der_libs/commonw.h der_libs/statbar.h
+der_libs/trackbar.o: der_libs/trackbar.h
 cdtimer.o: resource.h der_libs/common.h der_libs/commonw.h cdtimer.h
-cdtimer.o: der_libs/statbar.h
+cdtimer.o: der_libs/statbar.h der_libs/trackbar.h
 config.o: der_libs/common.h cdtimer.h
