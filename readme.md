@@ -9,8 +9,6 @@ Obtain [source code](https://github.com/DerellLicht/cdtimer) here
 
 Download [Windows installer](https://github.com/DerellLicht/bin/raw/master/cdtimer.zip) here
 
-<hr>
-
 ![cdtimer main window](images/cdtimer.jpg)
 
 This is a simple, slider-based countdown timer.  
