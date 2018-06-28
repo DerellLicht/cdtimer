@@ -1,11 +1,8 @@
 CDTIMER - derelict's Countdown Timer utility.
-Copyright (c) 2003-2017 Daniel D. Miller
+Copyright (c) 2003-2017 Derell Licht
 
 Email:     derelict@comcast.net
 Web Page:  derelllicht.com
-
-This utility was originally named TransDesk.  Dan Miller renamed it because
-the original name is used by other applications in common distribution.
 
 This program and its source code are distributed as open-source freeware.  
 They may be distributed via any media without my permission,
