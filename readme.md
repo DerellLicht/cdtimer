@@ -7,7 +7,7 @@ for any purpose that you wish, without contacting me further.
 
 Obtain [source code](https://github.com/DerellLicht/cdtimer) here
 
-Download [Windows installer](https://github.com/DerellLicht/bin/raw/master/cdtimer.zip) here
+Download [executable](https://github.com/DerellLicht/bin/raw/master/cdtimer.zip) here
 
 ![cdtimer main window](images/cdtimer.jpg)
 
