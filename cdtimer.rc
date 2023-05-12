@@ -74,7 +74,7 @@ BEGIN
     EDITTEXT                              IDC_EDIT3,      80, 64,  26, 10, ES_NUMBER
     PUSHBUTTON  "Count Up",               IDC_COUNTDIR,  120, 63,  70, 12, BS_PUSHBUTTON
     
-    LTEXT       "Wave file:",             IDC_STATIC,      4, 80,  74, 10
+    LTEXT       "Audio file:",            IDC_STATIC,      4, 80,  74, 10
     PUSHBUTTON  " ... ",                  IDC_WAVEFILE,   60, 79,  12, 11, BS_PUSHBUTTON
     EDITTEXT                              IDC_EDIT4,      80, 80, 110, 10, ES_NUMBER
     

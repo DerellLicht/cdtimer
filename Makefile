@@ -16,13 +16,15 @@ LiFLAGS += -I./der_libs
 LiFLAGS += -I.
 LiFLAGS += -DWINVER=0x0501
 
+LIBS=-lgdi32 -lcomctl32 -lwinmm -lzplay
+
 CPPSRC=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
 der_libs/winmsgs.cpp \
 der_libs/statbar.cpp \
 der_libs/trackbar.cpp
 
-CPPSRC+=cdtimer.cpp config.cpp 
+CPPSRC+=cdtimer.cpp config.cpp zplay_audio.cpp
 
 RCSRC=anacomm.rc
 
@@ -54,7 +56,7 @@ depend:
 #  build rules for executables                           
 #**************************************************************
 cdtimer.exe: $(OBJS)
-	g++ $(CFLAGS) $(LFLAGS) $^ -o $@ -lgdi32 -lcomctl32 -lwinmm
+	g++ $(CFLAGS) $(LFLAGS) $^ -o $@ $(LIBS)
 
 #**************************************************************
 #  build rules for libraries and other components

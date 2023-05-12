@@ -3,17 +3,20 @@
 //  
 //  Written by:   Daniel D. Miller
 //  
-//  Last Update:  11/20/17 
+//  Last Update:  05/11/23
 //*********************************************************************
 
-static const char Version[] = "Countdown Timer V1.04" ;
+static const char Version[] = "Countdown Timer V1.05" ;
 
 #include <windows.h>
-#include <commctrl.h>			  //  link to comctl32.lib
+#include <commctrl.h>           //  link to comctl32.lib
 #include <limits.h>     //  PATH_MAX
 #include <math.h>
 #include <tchar.h>
 #include <sys/stat.h>
+
+// include libzplay header file
+#include <libzplay.h>
 
 #include "resource.h"
 #include "common.h"
@@ -49,7 +52,7 @@ static unsigned TICK_SPREAD = (30) ;
 
 unsigned max_timer_mins = (MAX_TIME / 60) ;
 unsigned ticks = TICK_SPREAD ;
-char wave_name[PATH_MAX+1] = "c:\\waves\\MAGIC.WAV" ; 
+char wave_name[MAX_WAVE_FILE_LEN+1] = "c:\\waves\\MAGIC.WAV" ; 
 
 static unsigned tcount = 0 ;
 static unsigned tmins  = 0 ;
@@ -184,24 +187,44 @@ static void set_control_font(HWND hwnd, TCHAR *fname, uint fheight, uint flags)
 //******************************************************************
 static BOOL CALLBACK DoneProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+   int result ;
    switch(msg) {
    case WM_INITDIALOG:
-      if (PlaySound(wave_name, NULL, SND_FILENAME) == FALSE) {
-         syslog("PlaySound: %s\n", get_system_message());
-      } 
+      //  PlaySound() does not play mp3 files, as it turns out...
+      //  So a different process is required.
+      // if (PlaySound(wave_name, NULL, SND_FILENAME) == FALSE) {
+      //    syslog("PlaySound: %s\n", get_system_message());
+      // } 
       // else {
       //    syslog("PlaySound: %s completed successfully\n", wave_name);
       // }
-		return TRUE;	
+      
+      //  MCI interface doesn't work either... yet return code is 0 (success)
+      // {
+      // static char short_str[MAX_WAVE_FILE_LEN+1] = "" ;
+      // CMP3_MCI MyMP3;
+      // int result = GetShortPathName (wave_name, short_str, MAX_WAVE_FILE_LEN);
+      // syslog("short: %d: [%s]\n", result, short_str);
+      // DWORD lerror = MyMP3.Load(short_str);
+      // DWORD serror = MyMP3.Play();
+      // syslog("MCI: Load: %08X, Play: %08X\n", lerror, serror);
+      // }
+      
+      //  hopefully, zplay library will work!!
+      result = zplay_audio_file(wave_name);
+      if (result != 0) {
+         syslog("Error %d playing %s\n", result, wave_name);
+      }
+      return TRUE;   
 
    case WM_COMMAND:
       if (HIWORD (wParam) == BN_CLICKED) {
          switch(LOWORD(wParam)) {
          case IDOK: //  take the new settings
-      		DestroyWindow(hwnd);
-				break;
+            DestroyWindow(hwnd);
+            break;
          }  //lint !e744  switch(target)
-		}	//  if btn_clicked
+      }  //  if btn_clicked
       return FALSE;
 
    case WM_CLOSE:
@@ -213,7 +236,7 @@ static BOOL CALLBACK DoneProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
    default:
       return FALSE;
-	}
+   }
 }  //lint !e715
 
 //***********************************************************************
