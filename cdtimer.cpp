@@ -135,6 +135,83 @@ static ct_state_t count_state = STATE_IDLE ;
 //   return hwndTrack;
 // }  //lint !e715
 
+//******************************************************************
+//  Note that 'ext' should be *only* the extension, 
+//  no dot, wildcard, or other text
+//******************************************************************
+static char szGenFilter[] = 
+   "MP3 Files (*.MP3)\0*.mp3\0"  
+   "WAV Files (*.WAV)\0*.wav\0"  
+   "FLAC Files (*.flac)\0*.flac\0"  
+   "All Files (*.*)\0*.*\0\0" ;
+
+//lint -esym(714, select_file)
+//lint -esym(759, select_file)
+//lint -esym(765, select_file)
+static bool select_audio_file(HWND hDlgWnd, char *command_filename)
+{
+   // char szGenFilter[80] ;
+   // char *gfptr = szGenFilter ;
+   // uint slen = 0 ;
+   // slen += (uint) sprintf(gfptr+slen, "%s Files (*.%s)", ext, ext) ;
+   // slen++ ; //  leave current NULL-term in place
+   // slen += (uint) sprintf(gfptr+slen, "*.%s", ext) ;
+   // slen++ ; //  leave current NULL-term in place
+   // slen += (uint) sprintf(gfptr+slen, "All Files (*.*)") ;
+   // slen++ ; //  leave current NULL-term in place
+   // slen += (uint) sprintf(gfptr+slen, "*.*") ;
+   // slen++ ; //  leave current NULL-term in place
+   // *(gfptr+slen) = 0 ;  //  add a terminating NULL-term
+
+   // syslog("A handles=%d\n", get_handle_count());
+   OPENFILENAMEA ofn;       // common dialog box structure
+   char szFile[PATH_MAX];       // buffer for file name
+   char oldFile[PATH_MAX];       // buffer for file name
+   char dirFile[PATH_MAX];       // buffer for file name
+
+   // Initialize OPENFILENAME
+   ZeroMemory(&ofn, sizeof(ofn));
+   ofn.lStructSize = sizeof(ofn);
+   ofn.hwndOwner = hDlgWnd;
+   ofn.lpstrFile = szFile;
+   //
+   // Set lpstrFile[0] to '\0' so that GetOpenFileName does not
+   // use the contents of szFile to initialize itself.
+   //
+   ofn.lpstrFile[0] = '\0';
+   strcpy(dirFile, command_filename) ;
+   char *strptr = strrchr(dirFile, '\\') ;
+   if (strptr != 0) {
+      strptr++ ;  //  leave the backslash in place
+      *strptr = 0 ;  //  strip off filename
+      // OutputDebugStringA(dirFile) ;
+   }
+   ofn.lpstrInitialDir = dirFile ;
+   ofn.nMaxFile = sizeof(szFile);
+   ofn.lpstrFilter = szGenFilter ;
+   ofn.nFilterIndex = 1;
+   ofn.lpstrTitle = "select desired file" ;
+   ofn.lpstrFileTitle = NULL ;
+//    ofn.lpstrDefExt = TEXT ("txt") ;
+   // ofn.lpstrDefExt = ext ;
+   // ofn.nMaxFileTitle = 0;
+   // ofn.lpstrInitialDir = NULL;
+   ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+   // Display the Open dialog box.
+   // syslog("B handles=%d\n", get_handle_count());
+   if (GetOpenFileNameA(&ofn)) {
+   // syslog("C handles=%d\n", get_handle_count());
+      strncpy(oldFile, command_filename, sizeof(oldFile)) ;
+      strncpy(command_filename, ofn.lpstrFile, PATH_MAX) ;
+
+      SetFocus(hDlgWnd) ;
+      return true;
+   }
+   // syslog("D handles=%d\n", get_handle_count());
+   return false;
+}
+
 //*********************************************************************
 static void update_timer_count(HWND hwnd)
 {
@@ -457,7 +534,7 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
          switch (target) {
          case IDC_WAVEFILE:
             {
-            bool bresult = select_file(hwnd, wave_name, "wav");
+            bool bresult = select_audio_file(hwnd, wave_name);
             if (bresult) {
                // wsprintf(msgstr, "lpstrFile: %s\n", ofn.lpstrFile) ;
                // OutputDebugString(msgstr) ;

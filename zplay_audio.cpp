@@ -110,7 +110,8 @@ int zplay_audio_file(char const * const mp3_file)
       player->Release(); // delete ZPlay class
       return 5;
    }
-   // SleepEx(pInfo.Length.hms.second, false);
+   //  this probably *should* include the minutes and hours as well,
+   //  though I don't think anyone would want that for a timer program...
    unsigned total_secs = (pInfo.Length.hms.second+1) * 1000 ;
    SleepEx(total_secs, false);
 

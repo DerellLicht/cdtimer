@@ -44,7 +44,7 @@ clean:
 
 dist:
 	rm -f *.zip
-	zip cdtimer.zip cdtimer.exe cdtimer.txt
+	zip cdtimer.zip cdtimer.exe readme.md libzplay.dll
 																			
 lint:
 	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) lintdefs.cpp cdtimer.rc $(CPPSRC)
