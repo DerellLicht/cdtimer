@@ -1,13 +1,13 @@
 ### CDTIMER - derelict's Countdown Timer utility.
 
-This application is copyright (c) 2003-2017  Derell Licht  
+This application is copyright (c) 2003-2023  Derell Licht  
 This program, and its source code, are distributed as unrestricted freeware.
 You can use them for any purpose, personal or commercial, in whole or in part,
 for any purpose that you wish, without contacting me further.
 
 Obtain [source code](https://github.com/DerellLicht/cdtimer) here
 
-Download [executable](https://github.com/DerellLicht/bin/raw/master/cdtimer.zip) here
+Download [executable](http://derelllicht.com/files/cdtimer.zip) here
 
 ![cdtimer main window](images/cdtimer.jpg)
 
