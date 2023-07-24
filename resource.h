@@ -5,6 +5,10 @@
 #define  IDD_DONE_DIALOG   302
 #define  IDI_CDTIMER       303
 #define  IDT_TIMER         304
+#define  IDC_VERNUM        305
+#define  IDC_WEBLINK       306
+#define  IDD_ABOUT         307
+#define  IDC_ABOUT         308
 
 #define  IDC_TITLE         1001
 #define  IDC_MESSAGE       1002

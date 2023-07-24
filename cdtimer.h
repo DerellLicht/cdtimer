@@ -21,4 +21,6 @@ LRESULT save_cfg_file(void);
 //  zplay_audio.cpp
 int zplay_audio_file(char const * const mp3_file);
 
+//  about.cpp
+BOOL CmdAbout(HWND hwnd);
 

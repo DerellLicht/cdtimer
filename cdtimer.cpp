@@ -6,8 +6,6 @@
 //  Last Update:  05/11/23
 //*********************************************************************
 
-static const char Version[] = "Countdown Timer V1.05" ;
-
 #include <windows.h>
 #include <commctrl.h>           //  link to comctl32.lib
 #include <limits.h>     //  PATH_MAX
@@ -16,7 +14,7 @@ static const char Version[] = "Countdown Timer V1.05" ;
 #include <sys/stat.h>
 
 // include libzplay header file
-#include <libzplay.h>
+// #include <libzplay.h>
 
 #include "resource.h"
 #include "common.h"
@@ -25,6 +23,9 @@ static const char Version[] = "Countdown Timer V1.05" ;
 #include "statbar.h"
 #include "winmsgs.h"
 #include "trackbar.h"
+#include "version.h"
+
+static const char Version[] = "Countdown Timer " VerNum ;
 
 //lint -esym(1055, atoi)
 
@@ -33,7 +34,7 @@ static UINT  timerID = 0 ;
 //*********************************************************************
 // variables
 
-static HINSTANCE g_hinst;
+HINSTANCE g_hinst;
 static HWND hwndTitle = NULL ;
 static HWND hwndMessage = NULL ;
 static HWND hwndMaxMins = NULL ;
@@ -139,7 +140,7 @@ static ct_state_t count_state = STATE_IDLE ;
 //  Note that 'ext' should be *only* the extension, 
 //  no dot, wildcard, or other text
 //******************************************************************
-static char szGenFilter[] = 
+static char const szGenFilter[] = 
    "MP3 Files (*.MP3)\0*.mp3\0"  
    "WAV Files (*.WAV)\0*.wav\0"  
    "FLAC Files (*.flac)\0*.flac\0"  
@@ -354,6 +355,8 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
    case WM_INITDIALOG:
       SetClassLongA(hwnd, GCL_HICON,   (LONG) LoadIcon(g_hinst, (LPCTSTR)IDI_CDTIMER));
       SetClassLongA(hwnd, GCL_HICONSM, (LONG) LoadIcon(g_hinst, (LPCTSTR)IDI_CDTIMER));
+      // wsprintf(msgstr, "DerBar %s", VerNum) ;
+      // SetWindowText(hwnd, msgstr) ;
       SetWindowText(hwnd, Version) ;
       
       hwndTitle = GetDlgItem(hwnd, IDC_TITLE) ;
@@ -524,6 +527,7 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
       {
       DWORD cmd = HIWORD (wParam) ;
       DWORD target = LOWORD(wParam) ;
+      // syslog("WM_CMD: %u %u\n", cmd, target);
       int  tempEditLength ;
       char tempEditText[2048];
       unsigned utemp ;
@@ -532,6 +536,10 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
       switch (cmd) {
       case BN_CLICKED:
          switch (target) {
+         case IDC_ABOUT:
+            CmdAbout(hwnd);
+            return TRUE;
+
          case IDC_WAVEFILE:
             {
             bool bresult = select_audio_file(hwnd, wave_name);
@@ -545,8 +553,9 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
                // inireg.set_param("wavefile", wave_name) ;
                // hwndWaveFile = CreateEdit (tempstr, DATA_COL, WAVE_ROW, WAV_FIELD_LEN, FIELD_HEIGHT, IDC_EDIT3, hwnd, g_hInst);
             } else {
-               wsprintf(msgstr, "GetOpenFileName: %s\n", get_system_message()) ;
-               OutputDebugString(msgstr) ;
+               syslog("GetOpenFileName: %s\n", get_system_message()) ;
+               // wsprintf(msgstr, "GetOpenFileName: %s\n", get_system_message()) ;
+               // OutputDebugString(msgstr) ;
             }
             }
             break;
@@ -633,6 +642,7 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 
             }
             break;
+            
          }  //lint !e744  end switch(target)
       }  //lint !e744  end switch(cmd)
       }  //  end WM_COMMAND context
