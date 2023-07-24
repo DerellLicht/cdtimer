@@ -26,7 +26,7 @@
 #include "hyperlinks.h"
 
 //  window.mgr.cpp
-extern HINSTANCE g_hinst ;
+// extern HINSTANCE g_hinst ;
 // extern OSVERSIONINFO gOSV;
 
 /*-----------------------------------------------------------------------------
@@ -79,6 +79,6 @@ PURPOSE: Creates the modal About dialog
 -----------------------------------------------------------------------------*/
 BOOL CmdAbout(HWND hwnd)
 {
-    DialogBox(g_hinst, MAKEINTRESOURCE(IDD_ABOUT), 0, AboutDlgProc);
+    DialogBox((HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), MAKEINTRESOURCE(IDD_ABOUT), 0, AboutDlgProc);
     return 0;
 }  //lint !e715 !e818  hwnd

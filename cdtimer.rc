@@ -108,7 +108,7 @@ BEGIN
     LTEXT           "CDTimer timer utility",IDC_STATIC,        36,15, 75,12
     LTEXT           VerNum,IDC_VERNUM,                        111,15, 50,12
     LTEXT           "Copyright (c) 2003-2023",IDC_STATIC,      36,28,100,12
-    LTEXT           "Daniel D Miller",IDC_STATIC,              36,41,100,12
+    LTEXT           "Derell Licht",IDC_STATIC,                 36,41,100,12
     // PUSHBUTTON      "home.comcast.net/~derelict",IDC_WEBLINK,  36,54,100,12
     LTEXT           "http://www.derelllicht.com/freeware.html",IDC_WEBLINK,  36,54,140,12
     DEFPUSHBUTTON   "Close",IDOK,36,70,100,14
@@ -140,9 +140,9 @@ BEGIN
             VALUE "CompanyName", "Cathartes Aura"
             VALUE "FileDescription", "CDTimer - up/down timer utility"
             VALUE "FileVersion", VerNum
-            VALUE "InternalName", "DerBar"
-            VALUE "LegalCopyright", "Copyright © 2008-2023"
-            VALUE "OriginalFilename", "DerBar.exe"
+            VALUE "InternalName", "CDTimer"
+            VALUE "LegalCopyright", "Copyright © 2003-2023"
+            VALUE "OriginalFilename", "CDTimer.exe"
             VALUE "ProductName", "CDTimer - up/down timer utility"
             VALUE "ProductVersion", VerNum
         END

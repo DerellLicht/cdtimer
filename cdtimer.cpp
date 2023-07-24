@@ -34,7 +34,7 @@ static UINT  timerID = 0 ;
 //*********************************************************************
 // variables
 
-HINSTANCE g_hinst;
+static HINSTANCE g_hinst;
 static HWND hwndTitle = NULL ;
 static HWND hwndMessage = NULL ;
 static HWND hwndMaxMins = NULL ;
