@@ -22,9 +22,10 @@ CPPSRC=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
 der_libs/winmsgs.cpp \
 der_libs/statbar.cpp \
-der_libs/trackbar.cpp
+der_libs/trackbar.cpp \
+der_libs/hyperlinks.cpp 
 
-CPPSRC+=cdtimer.cpp config.cpp about.cpp hyperlinks.cpp zplay_audio.cpp
+CPPSRC+=cdtimer.cpp config.cpp about.cpp zplay_audio.cpp
 
 RCSRC=cdtimer.rc
 
@@ -73,8 +74,8 @@ der_libs/common_funcs.o: der_libs/common.h
 der_libs/common_win.o: der_libs/common.h der_libs/commonw.h
 der_libs/statbar.o: der_libs/common.h der_libs/commonw.h der_libs/statbar.h
 der_libs/trackbar.o: der_libs/trackbar.h
+der_libs/hyperlinks.o: der_libs/iface_32_64.h der_libs/hyperlinks.h
 cdtimer.o: resource.h der_libs/common.h der_libs/commonw.h cdtimer.h
 cdtimer.o: der_libs/statbar.h der_libs/trackbar.h version.h
 config.o: der_libs/common.h cdtimer.h
-about.o: resource.h version.h hyperlinks.h
-hyperlinks.o: iface_32_64.h hyperlinks.h
+about.o: resource.h version.h der_libs/hyperlinks.h
