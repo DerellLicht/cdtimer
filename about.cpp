@@ -25,10 +25,6 @@
 #include "version.h"
 #include "hyperlinks.h"
 
-//  window.mgr.cpp
-// extern HINSTANCE g_hinst ;
-// extern OSVERSIONINFO gOSV;
-
 /*-----------------------------------------------------------------------------
 
 FUNCTION: AboutDlgProc(HWND, UINT, WPARAM, LPARAM)
