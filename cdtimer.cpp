@@ -8,7 +8,6 @@
 
 #include <windows.h>
 #include <commctrl.h>           //  link to comctl32.lib
-#include <limits.h>     //  PATH_MAX
 #include <math.h>
 #include <tchar.h>
 #include <sys/stat.h>
@@ -53,7 +52,7 @@ static unsigned TICK_SPREAD = (30) ;
 
 unsigned max_timer_mins = (MAX_TIME / 60) ;
 unsigned ticks = TICK_SPREAD ;
-char wave_name[MAX_WAVE_FILE_LEN+1] = "c:\\waves\\MAGIC.WAV" ; 
+char wave_name[MAX_FILE_LEN+1] = "c:\\waves\\MAGIC.WAV" ; 
 
 static unsigned tcount = 0 ;
 static unsigned tmins  = 0 ;
@@ -166,9 +165,9 @@ static bool select_audio_file(HWND hDlgWnd, char *command_filename)
 
    // syslog("A handles=%d\n", get_handle_count());
    OPENFILENAMEA ofn;       // common dialog box structure
-   char szFile[PATH_MAX];       // buffer for file name
-   char oldFile[PATH_MAX];       // buffer for file name
-   char dirFile[PATH_MAX];       // buffer for file name
+   char szFile[MAX_PATH_LEN];       // buffer for file name
+   char oldFile[MAX_PATH_LEN];       // buffer for file name
+   char dirFile[MAX_PATH_LEN];       // buffer for file name
 
    // Initialize OPENFILENAME
    ZeroMemory(&ofn, sizeof(ofn));
@@ -204,7 +203,7 @@ static bool select_audio_file(HWND hDlgWnd, char *command_filename)
    if (GetOpenFileNameA(&ofn)) {
    // syslog("C handles=%d\n", get_handle_count());
       strncpy(oldFile, command_filename, sizeof(oldFile)) ;
-      strncpy(command_filename, ofn.lpstrFile, PATH_MAX) ;
+      strncpy(command_filename, ofn.lpstrFile, MAX_PATH_LEN) ;
 
       SetFocus(hDlgWnd) ;
       return true;

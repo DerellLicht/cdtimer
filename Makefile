@@ -14,9 +14,11 @@ CFLAGS += -Wno-write-strings
 CFLAGS += -I./der_libs
 LiFLAGS += -I./der_libs
 LiFLAGS += -I.
-LiFLAGS += -DWINVER=0x0501
+#LiFLAGS += -DWINVER=0x0501
 
-LIBS=-lgdi32 -lcomctl32 -lwinmm -lzplay
+IFLAGS += -Ider_libs
+
+LINTFILES=lintdefs.cpp lintdefs.ref.h 
 
 CPPSRC=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
@@ -32,16 +34,18 @@ RCSRC=cdtimer.rc
 OBJS = $(CPPSRC:.cpp=.o) rc.o
 BINS=cdtimer.exe 
 
-%.o: %.cpp
-	g++ $(CFLAGS) -c $< -o $@
+LIBS=-lgdi32 -lcomctl32 -lwinmm -lzplay
 
 #**************************************************************
 #  generic build rules
 #**************************************************************
+%.o: %.cpp
+	g++ $(CFLAGS) -c $< -o $@
+
 all: $(BINS)
 
 clean:
-	rm -f $(BINS) *.o
+	rm -f $(BINS) $(OBJS)
 
 dist:
 	rm -f *.zip
@@ -51,10 +55,10 @@ wc:
 	wc -l *.cpp *.rc
 
 lint:
-	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) lintdefs.cpp cdtimer.rc $(CPPSRC)
+	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) $(LINTFILES)  cdtimer.rc $(CPPSRC)
 
 depend:
-	makedepend $(CPPSRC)
+	makedepend $(IFLAGS) $(CPPSRC)
 
 #**************************************************************
 #  build rules for executables                           
@@ -76,6 +80,7 @@ der_libs/statbar.o: der_libs/common.h der_libs/commonw.h der_libs/statbar.h
 der_libs/trackbar.o: der_libs/trackbar.h
 der_libs/hyperlinks.o: der_libs/iface_32_64.h der_libs/hyperlinks.h
 cdtimer.o: resource.h der_libs/common.h der_libs/commonw.h cdtimer.h
-cdtimer.o: der_libs/statbar.h der_libs/trackbar.h version.h
+cdtimer.o: der_libs/statbar.h der_libs/winmsgs.h der_libs/trackbar.h
+cdtimer.o: version.h
 config.o: der_libs/common.h cdtimer.h
 about.o: resource.h version.h der_libs/hyperlinks.h

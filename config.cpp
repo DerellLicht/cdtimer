@@ -14,14 +14,13 @@
 #include <windows.h>
 #include <stdio.h>   //  fopen, etc
 #include <stdlib.h>  //  atoi()
-#include <limits.h>     //  PATH_MAX
 
 #include "common.h"
 #include "cdtimer.h"
 
 uint window_top = 100 ;
 uint window_left = 200 ;
-static char ini_name[PATH_MAX+1] = "" ;
+static char ini_name[MAX_PATH_LEN+1] = "" ;
 
 //****************************************************************************
 //  debug: message-reporting data
