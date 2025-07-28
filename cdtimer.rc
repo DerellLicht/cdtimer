@@ -12,8 +12,8 @@
 // DS_3DLOOK
 //     Gives the dialog box a non-bold font and draws three-dimensional borders 
 //     around control windows in the dialog box.
-//     The DS_3DLOOK style is required only by Microsoft Win32®-based applications compiled 
-//     for system versions earlier than Windows 95 or Windows NT® 4.0. 
+//     The DS_3DLOOK style is required only by Microsoft Win32ï¿½-based applications compiled 
+//     for system versions earlier than Windows 95 or Windows NTï¿½ 4.0. 
 //     The system automatically applies the three-dimensional look to dialog boxes created by 
 //     applications compiled for current versions of the system.
 //*********************************************************************************************************
@@ -107,7 +107,7 @@ BEGIN
     ICON            IDI_MAINICON,IDC_STATIC,9,12
     LTEXT           "CDTimer timer utility",IDC_STATIC,        36,15, 75,12
     LTEXT           VerNum,IDC_VERNUM,                        111,15, 50,12
-    LTEXT           "Copyright (c) 2003-2023",IDC_STATIC,      36,28,100,12
+    LTEXT           "Copyright (c) 2003-2025",IDC_STATIC,      36,28,100,12
     LTEXT           "Derell Licht",IDC_STATIC,                 36,41,100,12
     // PUSHBUTTON      "home.comcast.net/~derelict",IDC_WEBLINK,  36,54,100,12
     LTEXT           "http://derelllicht.42web.io/freeware.html",IDC_WEBLINK,  36,54,140,12
@@ -141,7 +141,7 @@ BEGIN
             VALUE "FileDescription", "CDTimer - up/down timer utility"
             VALUE "FileVersion", VerNum
             VALUE "InternalName", "CDTimer"
-            VALUE "LegalCopyright", "Copyright © 2003-2023"
+            VALUE "LegalCopyright", "Copyright ï¿½ 2003-2025"
             VALUE "OriginalFilename", "CDTimer.exe"
             VALUE "ProductName", "CDTimer - up/down timer utility"
             VALUE "ProductVersion", VerNum
