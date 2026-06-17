@@ -107,16 +107,16 @@ LRESULT init_config(void)
          dbg_flags = strtoul(tl, NULL, 0);    
       } else
       if (strcmp(inpstr, "window_top") == 0) {
-         window_top = (unsigned) atoi(tl) ;
+         window_top = (unsigned) strtol(tl, NULL, 10) ;
       } else
       if (strcmp(inpstr, "window_left") == 0) {
-         window_left = (unsigned) atoi(tl) ;
+         window_left = (unsigned) strtol(tl, NULL, 10) ;
       } else
       if (strcmp(inpstr, "max_timer_mins") == 0) {
-         max_timer_mins = (unsigned) atoi(tl) ;
+         max_timer_mins = (unsigned) strtol(tl, NULL, 10) ;
       } else
       if (strcmp(inpstr, "ticks") == 0) {
-         ticks = (unsigned) atoi(tl) ;
+         ticks = (unsigned) strtol(tl, NULL, 10) ;
       } else
       if (strcmp(inpstr, "wave_name") == 0) {
          sprintf(wave_name, "%s", tl);

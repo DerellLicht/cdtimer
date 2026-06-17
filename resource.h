@@ -1,5 +1,5 @@
 
-#define  IDC_STATIC        -1
+#define  IDC_STATIC        (-1)
 
 #define  IDD_MAIN_DIALOG   301
 #define  IDD_DONE_DIALOG   302

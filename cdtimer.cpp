@@ -588,7 +588,7 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
                GetWindowText (hwndMaxMins, tempEditText, tempEditLength + 1);
                tempEditText[tempEditLength] = '\0';
 
-               utemp = (unsigned) atoi(tempEditText) ;
+               utemp = (unsigned) strtol(tempEditText, NULL, 10) ;
                if (utemp == 0) {
                   wsprintf(tempEditText, "%u", max_timer_mins) ;
                   SetWindowText(hwndMaxMins, tempEditText) ;
@@ -610,7 +610,7 @@ static LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
                GetWindowText (hwndSecsPerTick, tempEditText, tempEditLength + 1);
                tempEditText[tempEditLength] = '\0';
 
-               utemp = (unsigned) atoi(tempEditText) ;
+               utemp = (unsigned) strtol(tempEditText, NULL, 10) ;
                if (utemp == 0) {
                   wsprintf(tempEditText, "%u", ticks) ;
                   SetWindowText(hwndSecsPerTick, tempEditText) ;

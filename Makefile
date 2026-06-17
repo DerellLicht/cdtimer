@@ -18,7 +18,19 @@ LiFLAGS += -I.
 
 IFLAGS += -Ider_libs
 
-LINTFILES=lintdefs.cpp lintdefs.ref.h 
+#  clang-tidy options
+CHFLAGS = -header-filter=.*
+CHTAIL = --
+CHTAIL += -Ider_libs
+CHTAIL += -I..\mingw_libs
+ifeq ($(USE_64BIT),YES)
+CHTAIL += -DUSE_64BIT
+endif
+ifeq ($(USE_UNICODE),YES)
+CHTAIL += -DUNICODE -D_UNICODE
+endif
+
+LINTFILES=lintdefs.cpp lintdefs.ref.h
 
 CPPSRC=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
@@ -53,6 +65,9 @@ dist:
 																			
 wc:
 	wc -l *.cpp *.rc
+
+check:
+	cmd /C "d:\llvm\bin\clang-tidy.exe $(CHFLAGS) $(CPPSRC) $(CHTAIL)"
 
 lint:
 	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) $(LINTFILES)  cdtimer.rc $(CPPSRC)
