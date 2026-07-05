@@ -18,28 +18,16 @@ LiFLAGS += -I.
 
 IFLAGS += -Ider_libs
 
-#  clang-tidy options
-CHFLAGS = -header-filter=.*
-CHTAIL = --
-CHTAIL += -Ider_libs
-CHTAIL += -I..\mingw_libs
-ifeq ($(USE_64BIT),YES)
-CHTAIL += -DUSE_64BIT
-endif
-ifeq ($(USE_UNICODE),YES)
-CHTAIL += -DUNICODE -D_UNICODE
-endif
-
 LINTFILES=lintdefs.cpp lintdefs.ref.h
 
-CPPSRC=der_libs/common_funcs.cpp \
+CPPSRC=cdtimer.cpp config.cpp about.cpp zplay_audio.cpp
+
+CPPSRC+=der_libs/common_funcs.cpp \
 der_libs/common_win.cpp \
 der_libs/winmsgs.cpp \
 der_libs/statbar.cpp \
 der_libs/trackbar.cpp \
 der_libs/hyperlinks.cpp 
-
-CPPSRC+=cdtimer.cpp config.cpp about.cpp zplay_audio.cpp
 
 RCSRC=cdtimer.rc
 
@@ -67,7 +55,7 @@ wc:
 	wc -l *.cpp *.rc
 
 check:
-	cmd /C "d:\llvm\bin\clang-tidy.exe $(CHFLAGS) $(CPPSRC) $(CHTAIL)"
+	cmd /C "d:\llvm\bin\clang-tidy.exe $(CPPSRC)"
 
 lint:
 	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) $(LINTFILES)  cdtimer.rc $(CPPSRC)
@@ -89,13 +77,13 @@ rc.o: $(RCSRC)
 
 # DO NOT DELETE
 
-der_libs/common_funcs.o: der_libs/common.h
-der_libs/common_win.o: der_libs/common.h der_libs/commonw.h
-der_libs/statbar.o: der_libs/common.h der_libs/commonw.h der_libs/statbar.h
-der_libs/trackbar.o: der_libs/trackbar.h
-der_libs/hyperlinks.o: der_libs/iface_32_64.h der_libs/hyperlinks.h
 cdtimer.o: resource.h der_libs/common.h der_libs/commonw.h cdtimer.h
 cdtimer.o: der_libs/statbar.h der_libs/winmsgs.h der_libs/trackbar.h
 cdtimer.o: version.h
 config.o: der_libs/common.h cdtimer.h
 about.o: resource.h version.h der_libs/hyperlinks.h
+der_libs/common_funcs.o: der_libs/common.h
+der_libs/common_win.o: der_libs/common.h der_libs/commonw.h
+der_libs/statbar.o: der_libs/common.h der_libs/commonw.h der_libs/statbar.h
+der_libs/trackbar.o: der_libs/trackbar.h
+der_libs/hyperlinks.o: der_libs/iface_32_64.h der_libs/hyperlinks.h

@@ -4,13 +4,15 @@ Checks: |
   -bugprone-easily-swappable-parameters,
   -bugprone-narrowing-conversions,
   -bugprone-switch-missing-default-case,
-  -bugprone-throwing-static-initialization
-  -bugprone-incorrect-roundings
-  -bugprone-assignment-in-if-condition
+  -bugprone-throwing-static-initialization,
+  -bugprone-incorrect-roundings,
+  -bugprone-assignment-in-if-condition,
+  -bugprone-reserved-identifier,
   clang-analyzer-security.*,
   -clang-analyzer-security.insecureAPI.strcpy,
   clang-diagnostic-*,
   -clang-diagnostic-writable-strings,
+  -clang-diagnostic-unused-private-field,
   cppcoreguidelines-*,
   -cppcoreguidelines-macro-to-enum,
   -cppcoreguidelines-narrowing-conversions,
@@ -30,6 +32,7 @@ Checks: |
   -cppcoreguidelines-avoid-goto,
   -cppcoreguidelines-pro-type-union-access,
   -cppcoreguidelines-use-enum-class,
+  -cppcoreguidelines-virtual-class-destructor,
   modernize-*,
   -modernize-use-nullptr,
   -modernize-macro-to-enum,

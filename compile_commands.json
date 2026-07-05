@@ -1,0 +1,153 @@
+[
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "der_libs/common_funcs.cpp",
+   "-o",
+   "der_libs/common_funcs.o"
+  ],
+  "file": "der_libs/common_funcs.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "der_libs/common_win.cpp",
+   "-o",
+   "der_libs/common_win.o"
+  ],
+  "file": "der_libs/common_win.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "der_libs/winmsgs.cpp",
+   "-o",
+   "der_libs/winmsgs.o"
+  ],
+  "file": "der_libs/winmsgs.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "der_libs/statbar.cpp",
+   "-o",
+   "der_libs/statbar.o"
+  ],
+  "file": "der_libs/statbar.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "der_libs/trackbar.cpp",
+   "-o",
+   "der_libs/trackbar.o"
+  ],
+  "file": "der_libs/trackbar.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "der_libs/hyperlinks.cpp",
+   "-o",
+   "der_libs/hyperlinks.o"
+  ],
+  "file": "der_libs/hyperlinks.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "cdtimer.cpp",
+   "-o",
+   "cdtimer.o"
+  ],
+  "file": "cdtimer.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "config.cpp",
+   "-o",
+   "config.o"
+  ],
+  "file": "config.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-c",
+   "about.cpp",
+   "-o",
+   "about.o"
+  ],
+  "file": "about.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\cdtimer",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-Wno-write-strings",
+   "-I./der_libs",
+   "-ID:/tdm32/include/",
+   "-c",
+   "zplay_audio.cpp",
+   "-o",
+   "zplay_audio.o"
+  ],
+  "file": "zplay_audio.cpp"
+ }
+]
