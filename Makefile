@@ -1,4 +1,3 @@
-#SHELL=cmd.exe
 USE_DEBUG = NO
 
 ifeq ($(USE_DEBUG),YES)
@@ -49,7 +48,7 @@ clean:
 
 dist:
 	rm -f *.zip
-	zip cdtimer.zip cdtimer.exe readme.md libzplay.dll
+	zip cdtimer.zip cdtimer.exe readme.md libzplay.dll LICENSE.txt
 																			
 wc:
 	wc -l *.cpp *.rc
