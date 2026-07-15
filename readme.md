@@ -9,7 +9,7 @@ Obtain [source code](https://github.com/DerellLicht/cdtimer) here
 
 Download [executable](http://derelllicht.com/files/cdtimer.zip) here
 
-![cdtimer main window](images/cdtimer.jpg)
+![cdtimer main window](<images/cdtimer.jpg>)
 
 This is a simple, slider-based countdown timer.  
 It will display a "Time's Up" message box when the timer expires.  
