@@ -1,23 +1,25 @@
 USE_DEBUG = NO
+USE_64BIT = NO
+USE_UNICODE = NO
+USE_CLANG = NO
+# use -static for clang/llvm and cygwin/mingw
+USE_STATIC = NO
+
+include der_libs\tool_select.mak 
 
 ifeq ($(USE_DEBUG),YES)
-CFLAGS=-Wall -ggdb
+CFLAGS=-Wall -ggdb -c
 LFLAGS=-mwindows
 else
-CFLAGS=-Wall -O3
+CFLAGS=-Wall -O3 -c
 LFLAGS=-s -mwindows
 endif
 CFLAGS += -Wno-write-strings
 
 # build common code first
-CFLAGS += -I./der_libs
-LiFLAGS += -I./der_libs
-LiFLAGS += -I.
-#LiFLAGS += -DWINVER=0x0501
+CFLAGS += -Ider_libs
 
 IFLAGS += -Ider_libs
-
-LINTFILES=lintdefs.cpp lintdefs.ref.h
 
 CPPSRC=cdtimer.cpp config.cpp about.cpp zplay_audio.cpp
 
@@ -31,7 +33,9 @@ der_libs/hyperlinks.cpp
 RCSRC=cdtimer.rc
 
 OBJS = $(CPPSRC:.cpp=.o) rc.o
-BINS=cdtimer.exe 
+
+BIN=cdtimer
+BINX=$(BIN).exe 
 
 LIBS=-lgdi32 -lcomctl32 -lwinmm -lzplay
 
@@ -39,25 +43,28 @@ LIBS=-lgdi32 -lcomctl32 -lwinmm -lzplay
 #  generic build rules
 #**************************************************************
 %.o: %.cpp
-	g++ $(CFLAGS) -c $< -o $@
+	$(TOOLS)/$(GNAME) $(CFLAGS) $< -o $@
 
-all: $(BINS)
+all: $(BINX)
 
 clean:
-	rm -f $(BINS) $(OBJS)
+	rm -f $(BINX) $(OBJS)
 
 dist:
 	rm -f *.zip
-	zip cdtimer.zip cdtimer.exe readme.md libzplay.dll LICENSE.txt
+	zip $(BIN).zip $(BINX) readme.md libzplay.dll LICENSE.txt
 																			
 wc:
 	wc -l *.cpp *.rc
 
+clint:
+	cmd /C "python ..\ClaudeLint.py --exclude der_libs"
+	
+cppc:
+	cmd /C "cppcheck --project=compile_commands.json --std=c++14 --suppressions-list=./.suppress.cppcheck"
+
 check:
 	cmd /C "d:\llvm\bin\clang-tidy.exe $(CPPSRC)"
-
-lint:
-	c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) +fcp -ic:\lint9 mingw.lnt -os(_lint.tmp) $(LINTFILES)  cdtimer.rc $(CPPSRC)
 
 depend:
 	makedepend $(IFLAGS) $(CPPSRC)
@@ -66,13 +73,15 @@ depend:
 #  build rules for executables                           
 #**************************************************************
 cdtimer.exe: $(OBJS)
-	g++ $(CFLAGS) $(LFLAGS) $^ -o $@ $(LIBS)
+	$(TOOLS)/$(GNAME) $(OBJS) $(LFLAGS) -o $(BINX) $(LIBS) 
+#	g++ $(CFLAGS) $(LFLAGS) $^ -o $@ $(LIBS)
 
 #**************************************************************
 #  build rules for libraries and other components
 #**************************************************************
 rc.o: $(RCSRC)
-	windres -i $< -O COFF -o $@
+	$(TOOLS)\$(WRNAME) $< -O COFF -o $@
+#	windres -i $< -O COFF -o $@
 
 # DO NOT DELETE
 
