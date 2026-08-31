@@ -15,6 +15,7 @@ CFLAGS=-Wall -O3 -c
 LFLAGS=-s -mwindows
 endif
 CFLAGS += -Wno-write-strings
+CFLAGS += -Id:\tdm32\include
 
 # build common code first
 CFLAGS += -Ider_libs
@@ -58,7 +59,7 @@ wc:
 	wc -l *.cpp *.rc
 
 clint:
-	cmd /C "python ..\ClaudeLint.py --exclude der_libs"
+	cmd /C "python ..\ClaudeLint.py --exclude der_libs --extra-arg=-isystemd:/tdm32/include"
 	
 cppc:
 	cmd /C "cppcheck --project=compile_commands.json --std=c++14 --suppressions-list=./.suppress.cppcheck"

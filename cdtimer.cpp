@@ -12,9 +12,6 @@
 #include <tchar.h>
 #include <sys/stat.h>
 
-// include libzplay header file
-// #include <libzplay.h>
-
 #include "resource.h"
 #include "common.h"
 #include "commonw.h"
@@ -25,8 +22,6 @@
 #include "version.h"
 
 static const char Version[] = "Countdown Timer " VerNum ;
-
-//lint -esym(1055, atoi)
 
 static UINT  timerID = 0 ;
 
@@ -60,24 +55,15 @@ static unsigned tsecs  = 0 ;
 
 static CStatusBar *MainStatusBar = NULL;
 
-// static HWND hwndTrack;
 static CTrackbar *CDTrackbar = NULL ;
 //*************************************
-// #define  HEADER_Y    (20)
-// 
-// #define  DIALOG_X    (70)
-// #define  DIALOG_Y    (85)
-// 
 // // #define  SLIDER_X    ( 30)
 #define  SLIDER_Y    ( 40)
-// #define  DIALOG_DX   (260)
 
 #define  SLIDER_DX   (300)
 #define  SLIDER_DY   ( 30)
 
 #define  LEFT_EDGE   (75)
-
-// #define  STATUS_Y    (100)
 
 static char tempstr[260] ;
 

@@ -13,6 +13,7 @@ Checks: |
   clang-diagnostic-*,
   -clang-diagnostic-writable-strings,
   -clang-diagnostic-unused-private-field,
+  
   cppcoreguidelines-*,
   -cppcoreguidelines-macro-to-enum,
   -cppcoreguidelines-narrowing-conversions,
